@@ -1,4 +1,4 @@
-const serverListEndpoint = (window.location.href.indexOf("http://127.0.0.1:5500") ? "https://takepoint.io" : "http://127.0.0.1:8080") + "/find_instances";
+const serverListEndpoint = globalAPIBase + "/find_instances";
 const devSettings = {
     logASMCalls: false
 };

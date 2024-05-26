@@ -62,9 +62,9 @@
 
 			<div class="menu-container">
 				<div class="menu-segment" id="a-left">
-					<div id='takepoint-io_300x250'>
-						<script type='text/javascript'>
-							aiptag.cmd.display.push(function() { aipDisplayTag.display('takepoint-io_300x250'); });
+					<div id="takepoint-io_300x250">
+						<script type="text/javascript">
+							aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_300x250"); });
 						</script>
 					</div>
 				</div>
@@ -121,9 +121,9 @@
 				</div>
 			</div>
 			<div class="menu-segment wide-ad-unit" id="a-bottom">
-				<div id='takepoint-io_970x250'>
-					<script type='text/javascript'>
-						aiptag.cmd.display.push(function() { aipDisplayTag.display('takepoint-io_970x250'); });
+				<div id="takepoint-io_970x250">
+					<script type="text/javascript">
+						aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_970x250"); });
 					</script>
 				</div>
 			</div>
@@ -143,9 +143,9 @@
 
 		<div class="respawn-ad-container" id="respawn-ad-container">
 			<div class="" id="a-bottom-respawn">
-				<div id='takepoint-io_970x250_2'>
-					<script type='text/javascript'>
-						aiptag.cmd.display.push(function() { aipDisplayTag.display('takepoint-io_970x250_2'); });
+				<div id="takepoint-io_970x250_2">
+					<script type="text/javascript">
+						aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_970x250_2"); });
 					</script>
 					
 				</div>
@@ -215,14 +215,16 @@
             <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'UA-85616256-6');
+                gtag("js", new Date());
+                gtag("config", "UA-85616256-6");
             </script>
 
             <script src="adsbygoogle.js"></script>
             <script src="https://www.google.com/recaptcha/api.js?render=6LcA3gsaAAAAAI-hzo7vC9uApeFk4SpfMKKTRAPs"></script>
         -->
 		<script>
+			const globalAPIBase = window.location.href.indexOf("http://127.0.0.1:5500") ? "https://takepoint.io" : "http://127.0.0.1:8080";
+
 			(function(window, document){
 				console.log("Loading game client...");
 				var path = "client-1.13.6.7.js";
@@ -230,8 +232,8 @@
 					path = "client-1.13.6.7.wasm.js";
 				}
 				console.log("Game client set to: " + path);
-				var clientScript = document.createElement('script');
-				clientScript.type = 'text/javascript';
+				var clientScript = document.createElement("script");
+				clientScript.type = "text/javascript";
 				clientScript.src = path;
 				clientScript.async = true;
 				clientScript.onerror = function(e){
@@ -374,18 +376,17 @@
 				Module.switchServers(e);
 			}
 			
-			/*var gameStateRequest = new XMLHttpRequest();
+			var gameStateRequest = new XMLHttpRequest();
 
 			gameStateRequest.onreadystatechange = function () {
 				4 == this.readyState && 200 == this.status && fillStateData(JSON.parse(this.responseText));
 			}
-			gameStateRequest.open("GET", "https://gamestate.nitrogem35.repl.co/gameState", !0);
-			gameStateRequest.send();*/
-            setTimeout(fillStateData({}), 1000)
+			gameStateRequest.open("GET", globalAPIBase + "/gameState", !0);
+			gameStateRequest.send();
 
 			try{
-				if(window.location.hostname == 'crazygames.com'){
-					document.getElementById('moreGamesLink').href = "https://www.crazygames.com/c/io";
+				if(window.location.hostname == "crazygames.com"){
+					document.getElementById("moreGamesLink").href = "https://www.crazygames.com/c/io";
 				}
 			}
 			catch(e){
