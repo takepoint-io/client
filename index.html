@@ -52,21 +52,13 @@
 		</div>
 
 		<div class="game-menu-container" id="enterGameContainer">
-			<div class="featured-game-container">
-				<a href="https://gulch.io?ref=takepoint" target="_blank"><img id="featuredGameThumbnail" src="img/featured-game-thumbnail.png"></a>
-			</div>
-
 			<img id="logo" src="/img/logo.png">
 
 			<h2 id="gameFact"></h2>
 
 			<div class="menu-container">
 				<div class="menu-segment" id="a-left">
-					<div id="takepoint-io_300x250">
-						<script type="text/javascript">
-							aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_300x250"); });
-						</script>
-					</div>
+
 				</div>
 				<div class="menu-middle">
 					<div class="menu-segment enter-game-container">
@@ -223,9 +215,9 @@
             <script src="https://www.google.com/recaptcha/api.js?render=6LcA3gsaAAAAAI-hzo7vC9uApeFk4SpfMKKTRAPs"></script>
         -->
 		<script>
-			const globalAPIBase = window.location.href.indexOf("http://127.0.0.1:5500") ? "https://takepoint.io" : "http://127.0.0.1:8080";
+			const globalAPIBase = window.location.href.indexOf("https://takepoint.io") == 0 ? "https://takepoint.io" : "http://127.0.0.1:8080";
 
-			(function(window, document){
+			(function(window, document) {
 				console.log("Loading game client...");
 				var path = "client-1.13.6.7.js";
 				if(window.WebAssembly){
