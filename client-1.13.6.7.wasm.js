@@ -1,6 +1,6 @@
 const serverListEndpoint = globalAPIBase + "/find_instances";
 const devSettings = {
-    logASMCalls: false
+    logASMCalls: true
 };
 
 var Module = typeof Module != "undefined" ? Module : {};
@@ -1129,7 +1129,7 @@ var ASM_CONSTS = {
     }, 138784: function ($0) {
         return sockets[$0].readyState;
     }, 138819: function () {
-        Module.setHostname(location.hostname);
+        Module.setHostname("takepoint.io");
     }, 138862: function () {
         try {
             var query = window.location.search;
@@ -1211,9 +1211,9 @@ var ASM_CONSTS = {
         setTimeout(() => {
             //Well, we've fetched the servers. However, the wasm doesn't want to start the game loop!
             //So, we'll just do it manually after half a second.
-            _emscripten_set_main_loop(63, 60, 1);
+            _emscripten_set_main_loop(63, 60, false);
             _emscripten_set_main_loop_timing(1, 1);
-        }, 500)
+        }, 500);
     }, 140640: function () {
         return Date.now();
     }, 140663: function ($0, $1) {
@@ -1233,6 +1233,47 @@ var ASM_CONSTS = {
         } catch (e) {
             console.log(e);
         }
+    }
+};
+var asmCommonTable = {  
+    134622: function(args) {
+        console.log("set fillstyle " + "rgb(" + args[1] + ", " + args[2] + ", " + args[3] + ")");
+    },
+    135306: function(args) {
+
+    },
+    135422: function(args) {
+        
+    },
+    135474: function(args) {
+        //console.log(`Move to ${args[1]}, ${args[2]}`);
+    },
+    135507: function(args) {
+        //console.log(`Line to ${args[1]}, ${args[2]}`);
+    },
+    135336: function (args) {
+        console.log(`Draw arc x:${args[1]} y:${args[2]} radius:${args[3]} start:${args[4]} end:${args[5]}`);
+    },
+    135725: function (args) {
+        //console.log(`Set miterlimit to ${args[0]}`);
+    },
+    136172: function (args) {
+        console.log(`Hide element: ${UTF8ToString(args[0])}`);
+    },
+    136286: function (args) {
+        console.log(`Set display to flex for: ${UTF8ToString(args[0])}`);
+    },
+    138819: function() {
+        console.log(`Set hostname to takepoint.io`);
+    },
+    138862: function() {
+        console.log("Get server if exists in URL");
+    },
+    139069: function(args) {
+        console.log(`Free ptr ${args[0]}, text: ${UTF8ToString(args[0])}`)
+    },
+    140640: function(args) {
+        console.log("Get Date.now()");
     }
 };
 function ExitStatus(status) {
@@ -4586,7 +4627,12 @@ function readAsmConstArgs(sigPtr, buf) {
 function _emscripten_asm_const_int(code, sigPtr, argbuf) {
     var args = readAsmConstArgs(sigPtr, argbuf);
     if (devSettings.logASMCalls) {
-        console.log(code, args);
+        if (asmCommonTable[code]) {
+            asmCommonTable[code](args);
+        }
+        else {
+            console.log(code, args);
+        }
     }
     if (!ASM_CONSTS.hasOwnProperty(code)) {
         abort("No EM_ASM constant found at address " + code);
