@@ -1207,13 +1207,6 @@ var ASM_CONSTS = {
             n.innerHTML = content[i].region + " [" + content[i].players + "/" + content[i].capacity + "]";
             selector.appendChild(n);
         }
-        document.getElementById("loading").style.display = "none";
-        setTimeout(() => {
-            //Well, we've fetched the servers. However, the wasm doesn't want to start the game loop!
-            //So, we'll just do it manually after half a second.
-            _emscripten_set_main_loop(63, 60, false);
-            _emscripten_set_main_loop_timing(1, 1);
-        }, 500);
     }, 140640: function () {
         return Date.now();
     }, 140663: function ($0, $1) {
