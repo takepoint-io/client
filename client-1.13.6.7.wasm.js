@@ -1,6 +1,6 @@
 const serverListEndpoint = globalAPIBase + "/find_instances";
 const devSettings = {
-    logASMCalls: true
+    logASMCalls: false
 };
 
 var Module = typeof Module != "undefined" ? Module : {};
