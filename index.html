@@ -215,7 +215,20 @@
             <script src="https://www.google.com/recaptcha/api.js?render=6LcA3gsaAAAAAI-hzo7vC9uApeFk4SpfMKKTRAPs"></script>
         -->
 		<script>
-			const globalAPIBase = window.location.href.indexOf("https://takepoint.io") == 0 ? "https://takepoint.io" : "http://127.0.0.1:8080";
+			const debugPort = 5500;
+			const apiPort = 8080;
+			const globalAPIBase = getBase();
+			
+			function getBase() {
+				if (window.location.href.indexOf("https://takepoint.io") == 0) {
+					return "https://takepoint.io"
+				} 
+				else if (window.location.href.includes("devtunnels.ms")) {
+					let candidate = window.location.href.replace(debugPort.toString(), apiPort.toString());
+					return candidate.substring(0, candidate.length - 1);
+				}
+				else return "http://127.0.0.1:" + apiPort.toString();
+			}
 
 			(function(window, document) {
 				console.log("Loading game client...");
