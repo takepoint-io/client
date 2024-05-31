@@ -912,9 +912,6 @@ var ASM_CONSTS = {
         });
         GameAdsRenew("gameadsbanner");
     }, 133643: function () {
-        if (window.runningAds === undefined) {
-            return 1;
-        }
         return 0;
     }, 133706: function () {
         document.onkeydown = function (event) {
