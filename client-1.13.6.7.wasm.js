@@ -910,7 +910,8 @@ var ASM_CONSTS = {
         aiptag.cmd.display.push(function () {
             aipDisplayTag.display("takepoint-io_970x250_2");
         });
-        GameAdsRenew("gameadsbanner");
+        //Avoid crashes... for now
+        //GameAdsRenew("gameadsbanner");
     }, 133643: function () {
         return 0;
     }, 133706: function () {
