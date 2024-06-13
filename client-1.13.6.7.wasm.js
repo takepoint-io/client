@@ -1202,7 +1202,7 @@ var ASM_CONSTS = {
         for (i in content) {
             var n = document.createElement("option");
             n.value = content[i].city;
-            n.innerHTML = content[i].region + " [" + content[i].players + "/" + content[i].capacity + "]";
+            n.innerHTML = `${content[i].region} - ${content[i].city} [${content[i].players}/${content[i].capacity}]`;
             selector.appendChild(n);
         }
     }, 140640: function () {
