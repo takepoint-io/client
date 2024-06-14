@@ -925,6 +925,12 @@ var ASM_CONSTS = {
         };
         document.onkeyup = function (event) {
             if (event.keyCode) {
+                if (event.keyCode == 32) {
+                    for(var i = 0; i < Object.keys(sockets).length; i++) {
+                        if (sockets[i].readyState == 1) sockets[i].send("k,5,0");
+                    }
+                    return;
+                }
                 Module.onkeyup(event.keyCode);
             }
             if (event.keyCode == 32 && event.target.id != "chatbox") {
