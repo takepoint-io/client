@@ -922,6 +922,9 @@ var ASM_CONSTS = {
             if (event.keyCode == 32 && event.target.id != "chatbox") {
                 event.preventDefault();
             }
+            if (event.keyCode == 114) {
+                Module.toggleDebug();
+            }
         };
         document.onkeyup = function (event) {
             if (event.keyCode) {
