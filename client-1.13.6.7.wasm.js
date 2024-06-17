@@ -930,7 +930,7 @@ var ASM_CONSTS = {
             if (event.keyCode) {
                 if (event.keyCode == 32) {
                     for(var i = 0; i < Object.keys(sockets).length; i++) {
-                        if (sockets[i].readyState == 1) sockets[i].send("k,5,0");
+                        if (sockets[i].readyState == 1) sockets[i].send(new TextEncoder().encode("k,5,0\x00"));
                     }
                     return;
                 }

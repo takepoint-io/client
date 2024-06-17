@@ -373,7 +373,7 @@
 
 			function sm() {
 				let chatMsg = document.getElementById("chatbox").value;
-				if (chatMsg) Module.chat(ai(document.getElementById("chatbox").value));
+				if (chatMsg.trim().length) Module.chat(ai(document.getElementById("chatbox").value));
 			}
 			
 			function switchServer(e) {
