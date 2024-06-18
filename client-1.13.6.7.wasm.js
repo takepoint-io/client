@@ -1036,7 +1036,9 @@ var ASM_CONSTS = {
     }, 136111: function ($0, $1) {
         return contexts[$0].measureText(UTF8ToString($1)).width;
     }, 136172: function ($0) {
-        var element = document.getElementById(UTF8ToString($0));
+        let elemName = UTF8ToString($0);
+        if (elemName == "hiscores") elemName = "highscores";
+        var element = document.getElementById(elemName);
         if (!element) {
             return;
         }

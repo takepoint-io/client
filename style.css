@@ -1,5 +1,6 @@
 * {
     font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
 }
 
 #canvas {
@@ -56,8 +57,13 @@ body {
 
 #connecting,
 #disconnected,
+#highscores,
 #reconnectButtonContainer {
     z-index: 4
+}
+
+#changelogContainer,#highScoresList,#hiscoresHeading {
+    text-shadow: -1px 1px 2px #383838,-1px -1px 2px #383838,1px 1px 2px #383838,1px -1px 2px #383838,-2px 2px 2px #383838,-2px -2px 2px #383838,2px 2px 2px #383838,2px -2px 2px #383838
 }
 
 #p,
@@ -146,6 +152,8 @@ html {
 #disconnected {
     margin-top: -40px;
 }
+
+
 
 @-webkit-keyframes loading-fade {
 
@@ -334,11 +342,24 @@ html {
     margin: 5px;
 }
 
-.menu-title {
+.menu-title-big {
     color: #fff;
     font-size: 24px;
     margin: 0px 0px 5px 0px;
+}
+
+.menu-title-medium {
+    color: #fff;
+    font-size: 18px;
+    margin: 0px 0px 5px 0px;
+}
+
+.align-center {
     text-align: center;
+}
+
+.align-left {
+    text-align: left;
 }
 
 .server-selector-container {
@@ -366,13 +387,14 @@ html {
     width: 300px;
     height: 250px;
     padding: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-.how-to-play-text {
+.changelog-text {
     color: #fff;
-    font-size: 22px;
-    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-family: Verdana, sans-serif;
+    font-weight: 400;
     margin: 0px 0px 15px 0px;
 }
 
@@ -436,37 +458,27 @@ html {
 
 #infoFooter {
     left: 0;
-    bottom: 0;
-    position: fixed;
-    border-radius: 0px 4px 0px 0px;
+    border-radius: 0 15px 0 0
 }
 
-#infoFooter a {
-    font-size: 20px;
-    font-weight: bold;
+#socialFooter {
+    right: 0;
+    border-radius: 15px 0 0
+}
+
+#infoFooter a,#socialFooter a {
+    font-family: Orbitron;
+    font-weight: 900;
+    font-size: 18px;
     color: #FFF;
-    text-decoration: none;
+    padding: 2px 7px;
+    cursor: pointer;
+    text-decoration: none
 }
 
-.discord-button-container {
-    left: 10px;
-    bottom: 50px;
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    padding: 10px;
-}
-
-#discordButton {
-    display: inline-block;
-    background-color: #7289da;
-    width: 35px;
-    height: 35px;
-    border-radius: 5px;
-    padding: 5px;
-    background-image: url('/img/discord.svg');
-    background-repeat: no-repeat;
-    background-size: auto;
+#infoFooter a:hover,#socialFooter a:hover {
+    color: #e3e3e3;
+    text-decoration: underline
 }
 
 .modal-btn {
@@ -503,7 +515,16 @@ html {
     background-color: #26c11b
 }
 
-#highscoresHeading {
+#highscores {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 5px;
+    font-family: Orbitron;
+    font-weight: 900;
+}
+
+#highScoresList,#hiscoresHeading {
     text-align: center;
     color: #FFF;
     margin-top: 8px;
@@ -511,15 +532,15 @@ html {
     font-size: 22px
 }
 
-#highScoresTable {
-    margin-bottom: 10px;
+#highScoresList {
+    list-style-type: none;
+    font-size: 16px;
+    text-align: center;
+    color: #FFF
 }
 
-#highScoresTableBody {
-    list-style-type: none;
-    font-size: 18px;
-    text-align: left;
-    color: #FFF
+#highScoresList li {
+    margin-top: 5px
 }
 
 .featured-game-container {

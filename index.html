@@ -73,55 +73,31 @@
 						</div>
 					</div>
 					<div class="menu-segment server-selection">
-						<h1 class="menu-title">Servers</h1>
+						<h1 class="menu-title-big">Servers</h1>
 						<div class="server-selector-container">
 							<select id="serverSelector" class="server-selector" onchange="switchServer(this.value)"></select>
 						</div>
 					</div>
 				</div>
 				<div class="menu-segment info-scroller">
-					<h1 class="menu-title">Top Scores Today</h1>
-					<table id="highScoresTable" width="100%">
-						<tbody id="highScoresTableBody"></tbody>
-					</table>
-					
-					<h2 class="menu-title">How to play</h2>
-					<p class="how-to-play-text">Capture and defend points from other teams, unlock weapons, upgrades and perks.</p>
+					<h2 class="menu-title-big align-center">Changelog</h2>
 
-					<h2 class="menu-title">Controls</h2>
-					<p class="how-to-play-text">
-						Move: WASD / Arrow Keys<br>
-						Look: Mouse<br>
-						Reload: R<br>
-						Use Perk: Spacebar<br>
-						Chat: Enter<br>
+					<h2 class="menu-title-medium align-left">June 18, 2024</h2>
+					<p class="changelog-text">
+						- Redesigned the UI <br>
+						- Fixed a bug causing dropped inputs <br>
+						- All perks are now available. Unlock them at level 15 and press space to activate them.
 					</p>
 
-					<h2 class="menu-title">Gameplay</h2>
-					<p class="how-to-play-text">
-						You have two health bars, orange and green. Orange is a non rechargeable shield. Green is your health, it will recharge over time.
-					</p>
-					<p class="how-to-play-text">
-						You'll receive one upgrade point at each level from 1 to 10. After level 10, you'll be awarded an upgrade point every three levels.
-					</p>	
-					<p class="how-to-play-text">
-						Better weapons are unlocked when you reach Level 10. They will automatically replace your pistol.
-					</p>
-					<p class="how-to-play-text">
-						Perks are unlocked when you reach Level 15. Press Spacebar to use them.
-					</p>
 				</div>
 			</div>
+
 			<div class="menu-segment wide-ad-unit" id="a-bottom">
 				<div id="takepoint-io_970x250">
 					<script type="text/javascript">
 						aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_970x250"); });
 					</script>
 				</div>
-			</div>
-			
-			<div class="discord-button-container">
-				<a id="discordButton" target="_blank" href="https://discord.gg/vbZqzuv"></a>
 			</div>
 
 			<div id="footers">
@@ -130,7 +106,15 @@
 					<a target="_blank" href="https://stats.takepoint.io">Stats</a> | 
 					<a target="_blank" href="https://stats.takepoint.io/changelog">v1.13.6</a>
 				</div>
+				<div id="socialFooter">
+					<a id="discordButton" target="_blank" href="https://discord.gg/vbZqzuv">Discord</a>
+				</div>
 			</div>
+		</div>
+
+		<div id="highscores">
+			<h1 id="hiscoresHeading">Top Scores Today</h1>
+			<ul id="highScoresList"></ul>
 		</div>
 
 		<div class="respawn-ad-container" id="respawn-ad-container">
@@ -215,7 +199,6 @@
             <script src="https://www.google.com/recaptcha/api.js?render=6LcA3gsaAAAAAI-hzo7vC9uApeFk4SpfMKKTRAPs"></script>
         -->
 		<script>
-			const apiPort = 8080;
 			const globalAPIBase = getBase();
 			
 			function getBase() {
@@ -225,7 +208,7 @@
 				else if (window.location.href.indexOf("https://takepoint.nitrogem35.pw") == 0) {
 					return "https://api.nitrogem35.pw";
 				}
-				else return "http://127.0.0.1:" + apiPort.toString();
+				else return "https://api.nitrogem35.pw";
 			}
 
 			(function(window, document) {
@@ -318,30 +301,18 @@
 			});
 
 			function fillStateData(e) {
-				for (var table = document.getElementById("highScoresTableBody"); table.firstChild; ) table.removeChild(table.firstChild);
-				var rank = 0;
-				for (var n in e){
-					if (e[n].username) {
-						rank += 1;
-						var row = document.createElement("tr");
-
-						var rankCell = document.createElement("td");
-						rankCell.appendChild(document.createTextNode(rank + ". "));
-						row.appendChild(rankCell);
-
-						var usernameCell = document.createElement("td");
-						usernameCell.appendChild(document.createTextNode(e[n].username));
-						row.appendChild(usernameCell);
-
-						var scoreCell = document.createElement("td");
-						scoreCell.appendChild(document.createTextNode(e[n].score.toLocaleString()));
-						row.appendChild(scoreCell);
-
-						table.appendChild(row);
+				let table = document.getElementById("highScoresList");
+				table.innerHTML = '';
+				for (let key in e) {
+					if (e[key].username) {
+						let player = e[key];
+						let listItem = document.createElement("li");
+						listItem.appendChild(document.createTextNode(player.username + ": " + player.score.toLocaleString()));
+						table.appendChild(listItem);
 					} 
-					else{
+					else {
 						try {
-							document.getElementById("gameFact").innerHTML = e[n].toLocaleString() + " " + n + " today!";
+							document.getElementById("gameFact").innerHTML = e[key].toLocaleString() + " " + key + " today!";
 						} catch (e) {
 							return;
 						}
