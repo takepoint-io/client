@@ -58,7 +58,7 @@
 
 			<div class="menu-container">
 				<div class="menu-segment" id="a-left">
-					<iframe width="100%" height="100%" src="https://www.youtube.com/embed/xOD8Fz1TFK0?si=0b02Nf3HBqW6PXe3&amp;start=24" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+					<iframe class="featured-yt" width="100%" height="100%" src="https://www.youtube.com/embed/xOD8Fz1TFK0?si=0b02Nf3HBqW6PXe3&amp;start=24&amp;enablejsapi=1" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 				</div>
 				<div class="menu-middle">
 					<div class="menu-segment enter-game-container">
@@ -347,6 +347,8 @@
 			}
 
 			function eg() {
+				let yt = document.getElementsByClassName("featured-yt")[0];
+				yt.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
 				loginOpen || registerOpen || Module.enterGame();
 			}
 
