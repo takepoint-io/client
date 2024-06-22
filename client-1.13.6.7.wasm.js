@@ -1074,8 +1074,8 @@ var ASM_CONSTS = {
         renderArea = {};
         sockets = {};
     }, 136875: function () {
-        var enterGameContainer = document.getElementById("enterGameContainer");
-        enterGameContainer.style.display = "flex";
+        document.getElementById("enterGameContainer").style.display = "flex";
+        document.getElementById("highscores").style.display = "block"
     }, 136994: function ($0) {
         var connection = new WebSocket(sockets[$0].connectIp);
         connection.binaryType = "arraybuffer";
