@@ -941,6 +941,10 @@ var ASM_CONSTS = {
             }
         };
         document.onmousemove = function (event) {
+            if (window.disconnected && !window.reconnecting && window.serverName) {
+                Module.switchServers(window.serverName);
+                window.reconnecting = true;
+            }
             Module.onmousemove(event.clientX, event.clientY);
         };
         document.onmousedown = function (event) {
@@ -1083,6 +1087,14 @@ var ASM_CONSTS = {
             var buffer = Module._malloc(uint8Array.length);
             writeArrayToMemory(uint8Array, buffer);
             connection.events.push([buffer, uint8Array.length, Module.getClientTime()]);
+        };
+        connection.onopen = function() {
+            window.disconnected = false;
+            window.reconnecting = false;
+        }
+        connection.onclose = function (e) {
+            window.serverName = document.getElementById("serverSelector").value;
+            window.disconnected = true;
         };
     }, 137413: function ($0) {
         var serverSelector = document.getElementById("serverSelector");
