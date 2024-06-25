@@ -17,26 +17,8 @@
 
 		<link href="https://fonts.googleapis.com/css?family=Orbitron:900" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
 	</head>
 	<body oncontextmenu="return false;">
-		<script>
-			var aiptag = aiptag || {};
-			aiptag.cmd = aiptag.cmd || [];
-			aiptag.cmd.display = aiptag.cmd.display || [];
-			aiptag.cmd.player = aiptag.cmd.player || [];
-			aiptag.consented = true;
-
-			aiptag.cmp = {
-				show: true,
-				position: "centered",
-				button: true,
-				buttonText: "Privacy settings",
-				buttonPosition: "bottom-right"
-			}
-		</script>
-		<!--script async src="//api.adinplay.com/libs/aiptag/pub/TKP/takepoint.io/tag.min.js"></script-->
-
 		<span id="loading" class="loading-connecting">Loading...</span>
 		<span id="connecting" class="loading-connecting">Connecting...</span>
 		<div id="reconnectButtonContainer" style="display:none;">
@@ -102,9 +84,6 @@
 
 			<div class="menu-segment wide-ad-unit" id="a-bottom">
 				<div id="takepoint-io_970x250">
-					<script type="text/javascript">
-						aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_970x250"); });
-					</script>
 				</div>
 			</div>
 
@@ -123,17 +102,6 @@
 		<div id="highscores">
 			<h1 id="hiscoresHeading">Top Scores Today</h1>
 			<ul id="highScoresList"></ul>
-		</div>
-
-		<div class="respawn-ad-container" id="respawn-ad-container">
-			<div class="" id="a-bottom-respawn">
-				<div id="takepoint-io_970x250_2">
-					<script type="text/javascript">
-						aiptag.cmd.display.push(function() { aipDisplayTag.display("takepoint-io_970x250_2"); });
-					</script>
-					
-				</div>
-			</div>
 		</div>
 
 		<div id="loginModal" class="modal">
@@ -192,6 +160,8 @@
 				</div>
 			</div>
 		</div>
+
+		<script src="https://www.google.com/recaptcha/api.js?render=6LcsTAEqAAAAAB3NYunGHbpXrZkKIgbj6oWuaqBy"></script>
 		
 		<script>
 			const globalAPIBase = getBase();

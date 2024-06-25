@@ -942,8 +942,10 @@ var ASM_CONSTS = {
         };
         document.onmousemove = function (event) {
             if (window.disconnected && !window.reconnecting && window.serverName) {
-                Module.switchServers(window.serverName);
                 window.reconnecting = true;
+                setTimeout(() => {
+                    Module.switchServers(window.serverName);
+                }, 500);
             }
             Module.onmousemove(event.clientX, event.clientY);
         };
@@ -1199,7 +1201,7 @@ var ASM_CONSTS = {
         }
     }, 139711: function ($0) {
         grecaptcha.ready(function () {
-            grecaptcha.execute("6LcA3gsaAAAAAI-hzo7vC9uApeFk4SpfMKKTRAPs", { action: "connect" }).then(function (token) {
+            grecaptcha.execute("6LcsTAEqAAAAAB3NYunGHbpXrZkKIgbj6oWuaqBy", { action: "connect" }).then(function (token) {
                 var msg = "v," + token;
                 var ptr = Module._malloc(msg.length);
                 Module.stringToUTF8(msg, ptr, msg.length * 4);
