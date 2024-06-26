@@ -901,17 +901,7 @@ var ASM_CONSTS = {
         canvas.style.width = canvas.width / window.devicePixelRatio + "px";
         canvas.style.height = canvas.height / window.devicePixelRatio + "px";
     }, 133342: function () {
-        aiptag.cmd.display.push(function () {
-            aipDisplayTag.display("takepoint-io_300x250");
-        });
-        aiptag.cmd.display.push(function () {
-            aipDisplayTag.display("takepoint-io_970x250");
-        });
-        aiptag.cmd.display.push(function () {
-            aipDisplayTag.display("takepoint-io_970x250_2");
-        });
-        //Avoid crashes... for now
-        //GameAdsRenew("gameadsbanner");
+        //refresh ads
     }, 133643: function () {
         return 0;
     }, 133706: function () {
@@ -1093,6 +1083,7 @@ var ASM_CONSTS = {
         connection.onopen = function() {
             window.disconnected = false;
             window.reconnecting = false;
+            window.hookWS(connection);
         }
         connection.onclose = function (e) {
             window.serverName = document.getElementById("serverSelector").value;

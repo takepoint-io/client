@@ -162,7 +162,6 @@
 		</div>
 
 		<script src="https://www.google.com/recaptcha/api.js?render=6LcsTAEqAAAAAB3NYunGHbpXrZkKIgbj6oWuaqBy"></script>
-		
 		<script>
 			const globalAPIBase = getBase();
 			
@@ -178,22 +177,32 @@
 
 			(function(window, document) {
 				console.log("Loading game client...");
+				if (globalAPIBase == "http://localhost:8080") {
+					createScript("features-plain.js");
+				} else {
+					createScript("features.js");
+				}
 				var path = "client-1.13.6.7.js";
 				if(window.WebAssembly){
 					path = "client-1.13.6.7.wasm.js";
 				}
 				console.log("Game client set to: " + path);
-				var clientScript = document.createElement("script");
-				clientScript.type = "text/javascript";
-				clientScript.src = path;
-				clientScript.async = true;
-				clientScript.onerror = function(e){
+				var mainClient = createScript(path);
+				mainClient.onerror = function(e){
 					console.log(e);
 					console.error("Script error, reloading page...");
 					window.location.reload(true);
 				};
-				document.body.appendChild(clientScript);
 			})(window, document);
+
+			function createScript(path) {
+				var clientScript = document.createElement("script");
+				clientScript.type = "text/javascript";
+				clientScript.src = path;
+				clientScript.async = true;
+				document.body.appendChild(clientScript);
+				return clientScript;
+			}
 
 			var loginModal = document.getElementById("loginModal"),
 				registerModal = document.getElementById("registerModal"),
