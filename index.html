@@ -177,11 +177,7 @@
 
 			(function(window, document) {
 				console.log("Loading game client...");
-				if (globalAPIBase == "http://localhost:8080") {
-					createScript("features-plain.js");
-				} else {
-					createScript("features.js");
-				}
+				createScript("features.js");
 				var path = "client-1.13.6.7.js";
 				if(window.WebAssembly){
 					path = "client-1.13.6.7.wasm.js";
