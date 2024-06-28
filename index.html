@@ -183,7 +183,12 @@
 				else if (window.location.href.indexOf("https://takepoint.nitrogem35.pw") == 0) {
 					return "https://api.nitrogem35.pw";
 				}
-				else return "http://localhost:8080";
+				else {
+					let parts = window.location.href.split(":");
+					let ending = parts.pop().split("/")[0];
+					ending = "8080";
+					return parts.join(":") + ":" + ending;
+				}
 			}
 
 			(function(window, document) {
