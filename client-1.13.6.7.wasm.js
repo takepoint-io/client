@@ -906,7 +906,7 @@ var ASM_CONSTS = {
         return 0;
     }, 133706: function () {
         document.onkeydown = function (event) {
-            if (event.keyCode) {
+            if (event.keyCode && (event.keyCode == 13 || chatbox.style.display == "none")) {
                 Module.onkeydown(event.keyCode);
             }
             if (event.keyCode == 32 && event.target.id != "chatbox") {
