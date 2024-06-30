@@ -6,11 +6,14 @@
         constructor(socket) {
             this.socket = socket;
             this.throwablesInView = new Map();
+            this.slashCommands = [];
+            this.chatbox =  document.getElementById("chatbox");
             this.socket.addEventListener("message", packet => {
                 try {
                     onMessage(packet);
                 } catch (e) {}
             });
+           this.chatbox.oninput = () => { onChatInput() };
         }
         spawn(teamCode) {
             this.teamCode = teamCode;
@@ -72,7 +75,36 @@
                     game.throwablesInView.delete(grenadeID);
                     break;
                 }
+                case "sl": {
+                    let slashCommands = [];
+                    for (let i = 1; i < parts.length; i++) {
+                        slashCommands.push(parts[i]);
+                    }
+                    game.slashCommands = slashCommands;
+                }
             }
+        }
+    }
+
+    function onChatInput() {
+        let contents = game.chatbox.value;
+        displaySlashCommands(contents);
+    }
+
+    function displaySlashCommands(userInput) {
+        let slashCommandContainer = document.getElementById("slashCommandContainer");
+        slashCommandContainer.innerHTML = '';
+        if (userInput.length) for (let cmd of game.slashCommands) {
+            let cmdName = "/" + cmd;
+            if (!cmdName.startsWith(userInput)) continue;
+            let cmdDiv = document.createElement("div");
+            cmdDiv.innerText = cmdName;
+            slashCommandContainer.appendChild(cmdDiv);
+        }
+        if (slashCommandContainer.hasChildNodes() && slashCommandContainer.style.display != "grid") {
+            slashCommandContainer.style.display = "grid";
+        } else if (!slashCommandContainer.hasChildNodes()) {
+            slashCommandContainer.style.display = "none";
         }
     }
 
