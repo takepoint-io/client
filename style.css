@@ -728,6 +728,20 @@ a:hover .link {
     visibility: hidden;
 }
 
+#slashCommandContainer {
+    display: none;
+    width: 100%;
+    position: absolute;
+    bottom: 178px;
+    color: #e3e3e3;
+    background-color: rgb(46, 46, 46);
+    border: 2px solid #58585a;
+    border-radius: 5px 5px 0px 0px;
+    padding: 5px;
+    font-size: 23px;
+    text-align: center;
+}
+
 #chatboxContainer {
     position: fixed;
     display: flex;

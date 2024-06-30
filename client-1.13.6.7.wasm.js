@@ -1034,17 +1034,18 @@ var ASM_CONSTS = {
     }, 136172: function ($0) {
         let elemName = UTF8ToString($0);
         if (elemName == "hiscores") elemName = "highscores";
-        var element = document.getElementById(elemName);
-        if (!element) {
-            return;
-        }
+        let element = document.getElementById(elemName);
+        if (!element) return;
         element.style.display = "none";
-    }, 136286: function ($0) {
-        var element = document.getElementById(UTF8ToString($0));
-        if (!element) {
-            return;
+        if (elemName == "chatbox") {
+            element = document.getElementById("slashCommandContainer");
+            element.style.display = "none";
         }
-        if (UTF8ToString($0) == "chatbox" && (navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1)) {
+    }, 136286: function ($0) {
+        let elemName = UTF8ToString($0);
+        let element = document.getElementById(elemName);
+        if (!element) return;
+        if (elemName == "chatbox" && (navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1)) {
             element.style.display = "flex";
         } else {
             element.style.display = "flex";
