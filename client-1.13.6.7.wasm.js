@@ -882,6 +882,7 @@ var ASM_CONSTS = {
     }, 132734: function ($0, $1, $2) {
         contexts[$0].fillRect(0, 0, $1, $2);
     }, 132775: function ($0, $1, $2) {
+        if ($0 == 1) window.hudScale = $1;
         contexts[$0].scale($1, $2);
     }, 132807: function ($0, $1, $2, $3, $4, $5, $6) {
         contexts[$0].setTransform($1, $2, $3, $4, $5, $6);
