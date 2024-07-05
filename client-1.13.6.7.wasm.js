@@ -932,19 +932,22 @@ var ASM_CONSTS = {
             }
         };
         document.onmousemove = function (event) {
+            Module.onmousemove(event.clientX, event.clientY);
             if (window.disconnected && !window.reconnecting && window.serverName) {
                 window.reconnecting = true;
                 setTimeout(() => {
                     Module.switchServers(window.serverName);
                 }, 500);
             }
-            Module.onmousemove(event.clientX, event.clientY);
+            window.mousePos = [event.clientX, event.clientY];         
         };
         document.onmousedown = function (event) {
-            Module.onmousedown(event.clientX, event.clientY, event.which);
+            if (!window.hovering) Module.onmousedown(event.clientX, event.clientY, event.which);
+            window.mouseEvents.push({x: event.clientX, y: event.clientY, btn: event.which, pressed: true});
         };
         document.onmouseup = function (event) {
             Module.onmouseup(event.clientX, event.clientY, event.which);
+            window.mouseEvents.push({x: event.clientX, y: event.clientY, btn: event.which, pressed: false});
         };
         document.onwheel = function (event) {
             Module.onwheel(event.deltaY);
