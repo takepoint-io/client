@@ -22,8 +22,8 @@
                 } catch (e) {}
             });
             this.chatbox.oninput = () => { onChatInput() };
-            let hudElem = document.getElementById("hud");
-            this.hud = hudElem.getContext("2d");
+            this.canvas = document.getElementById("canvas").getContext("2d");
+            this.hud = document.getElementById("hud").getContext("2d");
             Browser.mainLoop.scheduler = function Browser_mainLoop_scheduler_rAF() {
                 Browser.requestAnimationFrame(Browser.mainLoop.runner);
                 drawGame();
@@ -33,7 +33,6 @@
         selectAttachment(id) {
             let packet = new Packet("attachment")
             packet.setParams(id);
-            console.log(packet);
             this.socket.send(packet.encode());
         }
     }
@@ -55,8 +54,11 @@
     }
 
     class Player {
-        constructor(id, weaponID) {
+        constructor(id, x, y, angle, weaponID) {
             this.id = id;
+            this.x = x;
+            this.y = y;
+            this.angle = angle;
             this.weapon = new Weapon(weaponID);
         }
     }
@@ -119,16 +121,24 @@
                     let playerID = +parts[1];
                     //let teamCode = +parts[2];
                     let weaponID = +parts[3];
+                    let x = +parts[4];
+                    let y = +parts[5];
                     game.myID = playerID;
-                    let player = new Player(playerID, weaponID);
+                    let player = new Player(playerID, x, y, 0, weaponID);
                     game.players.set(player.id, player);
-                    game.self = game.players.get(game.myID);
+                    game.self = game.players.get(player.id);
                     break;
                 }
                 case "b": {
                     let playerID = +parts[1];
+                    let x = +parts[2];
+                    let y = +parts[3];
+                    let angle = +parts[6];
                     let weaponAttachmentID = +parts[7];
                     let player = game.players.get(playerID);
+                    player.x = x;
+                    player.y = y;
+                    player.angle = angle;
                     if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
                     break;
                 }
@@ -136,8 +146,11 @@
                     let playerID = +parts[1];
                     //let teamCode = +parts[2];
                     let weaponID = +parts[3];
+                    let x = +parts[4];
+                    let y = +parts[5];
+                    let angle = +parts[7];
                     let weaponAttachmentID = +parts[17];
-                    let player = new Player(playerID, weaponID);
+                    let player = new Player(playerID, x, y, angle, weaponID);
                     if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
                     game.players.set(player.id, player);
                     break;
@@ -164,21 +177,21 @@
                                 game.attachment.toDraw.push({
                                     name: "Rapid Fire",
                                     id: 1,
-                                    svg: null
+                                    prop: "fireRate"
                                 });
                                 break;
                             case "sniper":
                                 game.attachment.toDraw.push({
                                     name: "High Impact",
                                     id: 1,
-                                    svg: null
+                                    prop: "highImpact"
                                 });
                                 break;
                             case "shotgun":
                                 game.attachment.toDraw.push({
                                     name: "Longer Barrel",
                                     id: 1,
-                                    svg: null
+                                    prop: "longBarrel"
                                 });
                                 break;
                         }
@@ -245,10 +258,24 @@
         preDraw: {
             window.hovering = false;
         }
+        //buggy, we need to adjust by adding viewport width/height
+        //drawWeapons();
         drawHud();
         postDraw: {
             window.mouseEvents = [];
         }
+    }
+
+    function drawWeapons() {
+        let ctx = game.canvas;
+        let canvasHeight = (ctx.canvas.height / window.devicePixelRatio) / window.canvasScale;
+        let canvasWidth = (ctx.canvas.width / window.devicePixelRatio) / window.canvasScale;
+        for (let [id, player] of game.players) {
+            if (id == game.myID) continue;
+            let playerRelative = getRelPos(player.x, player.y, canvasHeight, canvasWidth);
+            ctx.fillRect(playerRelative.x, playerRelative.y, 50, 50);
+        }
+
     }
 
     function drawHud() {
@@ -297,12 +324,50 @@
                 }
                 hud.fill();
                 hud.closePath();
+                //Draw text and svg
+                hud.globalAlpha = 1;
+                if (images[choice.prop]) hud.drawImage(images[choice.prop], x + 15, y + 6, width - 30, height - 30);
+                hud.fillStyle = "#ffffff";
+                hud.font = "16px Orbitron, sans-serif";
+                hud.textAlign = "center";
+                hud.lineWidth = 4;
+                let txt = choice.name;
+                let textWidth = hud.measureText(txt).width;
+                if (textWidth > width - 20) {
+                    txt = txt.split(" ");
+                    hud.font = "13px Orbitron, sans-serif";
+                    hud.lineWidth = 3;
+                    hud.strokeText(txt[0], x + width / 2, y + height - 17);
+                    hud.fillText(txt[0], x + width / 2, y + height - 17);
+                    hud.strokeText(txt[1], x + width / 2, y + height - 5);
+                    hud.fillText(txt[1], x + width / 2, y + height - 5);
+                }
+                else {
+                    hud.strokeText(txt, x + width / 2, y + height - 15);
+                    hud.fillText(txt, x + width / 2, y + height - 15);
+                }
             }
         }
     }
 
+    function getRelPos(x, y, width, height) {
+        return {
+            x: x - game.self.x,
+            y: y - game.self.y
+        };
+    }
+
     //Init
     let game;
+
+    let images = {};
+    ["highImpact", "longBarrel", "fireRate"].forEach(n => {
+        let img = new Image();
+        img.src = '/img/' + n + '.svg';
+        img.onload = function() {
+            images[n] = img;
+        }
+    });
 
     window.hookWS = function(socket) {
         game = new Game(socket);
