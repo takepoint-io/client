@@ -9,7 +9,8 @@
             this.throwables = new Map();
             this.players = new Map();
             this.myID = null;
-            this.self = null;
+            this.self = new Player(null, 0, 0, 0, 0, 0, 0);
+            this.self.alive = false;
             this.attachment = {
                 available: 0,
                 toDraw: []
@@ -54,12 +55,22 @@
     }
 
     class Player {
-        constructor(id, x, y, angle, weaponID) {
+        constructor(id, x, y, spdX, spdY, angle, weaponID) {
             this.id = id;
             this.x = x;
             this.y = y;
+            this.spdX = spdX;
+            this.spdY = spdY;
             this.angle = angle;
             this.weapon = new Weapon(weaponID);
+            this.alive = true;
+        }
+
+        calcWeaponPos() {
+            return {
+                x: Math.cos(Util.toRadians(this.angle + 37)) * 25,
+                y: Math.sin(Util.toRadians(this.angle + 37)) * 25
+            }
         }
     }
 
@@ -72,13 +83,13 @@
         setAttachment(id) {
             switch (this.name) {
                 case "assault":
-                    if (id == 1) this.attachment = "fireRate";
+                    if (id == 1) this.attachment = {name: "fireRate", color: "#ffa54e"};
                     break;
                 case "sniper":
-                    if (id == 1) this.attachment = "highImpact";
+                    if (id == 1) this.attachment = {name: "highImpact", color: "#95ffe9"};
                     break;
                 case "shotgun":
-                    if (id == 1) this.attachment = "longBarrel";
+                    if (id == 1) this.attachment = {name: "longBarrel", color: "#95b1ff"};
                     break;
             }
         }
@@ -104,53 +115,69 @@
         static isInBox(x, y, ox, oy, width, height) {
             return (x >= ox && x <= ox + width && y >= oy && y <= oy + height) ? true : false;
         }
+        static toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+        static roundTowardZero(n) {
+            return n >= 0 ? Math.floor(n ) : Math.ceil(n);
+        }
     }
 
     //Handlers
     function onMessage(packet) {
         let packetDecoded = new TextDecoder().decode(packet.data);
         let statePackets = packetDecoded.split("|");
+        let playerStateCount = 0;
         for (let statePacket of statePackets) {
             let parts = statePacket.split(",");
             let opcode = parts[0];
+            //right now, all updating happens here,
+            //but later I should offload it to the instaces of classes that are affected.
             switch (opcode) {
                 case ".": {
                     break;
                 }
                 case "a": {
                     let playerID = +parts[1];
-                    //let teamCode = +parts[2];
+                    let teamCode = +parts[2];
                     let weaponID = +parts[3];
                     let x = +parts[4];
                     let y = +parts[5];
                     game.myID = playerID;
-                    let player = new Player(playerID, x, y, 0, weaponID);
+                    let player = new Player(playerID, x, y, 0, 0, 0, weaponID);
                     game.players.set(player.id, player);
-                    game.self = game.players.get(player.id);
+                    game.self = player;
                     break;
                 }
                 case "b": {
                     let playerID = +parts[1];
                     let x = +parts[2];
                     let y = +parts[3];
+                    let spdX = +parts[4];
+                    let spdY = +parts[5];
                     let angle = +parts[6];
                     let weaponAttachmentID = +parts[7];
-                    let player = game.players.get(playerID);
+                    let player;
+                    if (playerID == game.myID || (!game.myID && playerStateCount == 0)) player = game.self;
+                    else player = game.players.get(playerID);
                     player.x = x;
                     player.y = y;
+                    player.spdX = spdX;
+                    player.spdY = spdY;
                     player.angle = angle;
                     if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
+                    playerStateCount++;
                     break;
                 }
                 case "d": {
                     let playerID = +parts[1];
-                    //let teamCode = +parts[2];
+                    let teamCode = +parts[2];
                     let weaponID = +parts[3];
                     let x = +parts[4];
                     let y = +parts[5];
                     let angle = +parts[7];
                     let weaponAttachmentID = +parts[17];
-                    let player = new Player(playerID, x, y, angle, weaponID);
+                    let player = new Player(playerID, x, y, 0, 0, angle, weaponID);
                     if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
                     game.players.set(player.id, player);
                     break;
@@ -162,17 +189,18 @@
                         game.attachment.toDraw = [];
                     }
                     game.players.delete(playerID);
+                    break;
                 }
                 case "f": {
                     let weaponID = +parts[11];
                     let attachmentAvailable = +parts[14];
-                    if (!self) return;
+                    if (!game.self) return;
                     if (weaponID) {
-                        self.weapon = new Weapon(weaponID);
+                        game.self.weapon = new Weapon(weaponID);
                     }
                     if (attachmentAvailable === 0 || attachmentAvailable === 1) {
                         game.attachment.available = attachmentAvailable;
-                        switch (self.weapon.name) {
+                        switch (game.self.weapon.name) {
                             case "assault":
                                 game.attachment.toDraw.push({
                                     name: "Rapid Fire",
@@ -227,6 +255,7 @@
                         slashCommands.push(parts[i]);
                     }
                     game.slashCommands = slashCommands;
+                    break;
                 }
             }
         }
@@ -257,13 +286,26 @@
     function drawGame() {
         preDraw: {
             window.hovering = false;
+            game.self.angle = window.mouseAngle;
         }
-        //buggy, we need to adjust by adding viewport width/height
-        //drawWeapons();
+        updatePositions();
+        drawWeapons();
         drawHud();
         postDraw: {
             window.mouseEvents = [];
         }
+    }
+
+    function updatePositions() {
+        for (let [id, player] of game.players) {
+            if (id == game.myID) continue;
+            //ms per frame / ms per tick
+            player.x += Util.roundTowardZero(player.spdX * 0.4);
+            player.y += Util.roundTowardZero(player.spdY * 0.4);
+        }
+        let self = game.self;
+        self.x += Util.roundTowardZero(self.spdX * 0.4);
+        self.y += Util.roundTowardZero(self.spdY * 0.4);
     }
 
     function drawWeapons() {
@@ -272,10 +314,78 @@
         let canvasWidth = (ctx.canvas.width / window.devicePixelRatio) / window.canvasScale;
         for (let [id, player] of game.players) {
             if (id == game.myID) continue;
-            let playerRelative = getRelPos(player.x, player.y, canvasHeight, canvasWidth);
-            ctx.fillRect(playerRelative.x, playerRelative.y, 50, 50);
+            drawAttachments(ctx, player, canvasWidth, canvasHeight);
         }
+        drawAttachments(ctx, game.self, canvasWidth, canvasHeight);
+    }
 
+    function drawAttachments(ctx, player, width, height) {
+        if (!player.alive || !player.weapon.attachment) return;
+        let attachment = player.weapon.attachment;
+        let playerRelative = getRelPos(player.x, player.y, width, height);
+        let weaponPos = player.calcWeaponPos();
+        let squarePos = { x: playerRelative.x + weaponPos.x, y: playerRelative.y + weaponPos.y };
+        drawAttachmentSquare(ctx, player, squarePos, attachment.color);
+        if (attachment.name == "longBarrel") {
+
+        }
+    }
+
+    function drawAttachmentSquare(ctx, player, pos, color) {
+        let offsetX = 0;
+        let offsetY = 0;
+        switch (player.weapon.name) {
+            case "assault":
+                offsetX = 16;
+                offsetY = 5;
+                break;
+            case "sniper":
+                offsetX = 12;
+                offsetY = 2;
+                break;
+            case "shotgun":
+                offsetX = 8;
+                offsetY = 4.5;
+                break;
+        }
+        let square = [
+            [0, 0],
+            [0, 5],
+            [9, 5],
+            [9, 0],
+            [-2, 0]
+        ].map((e) => [e[0] + offsetX, e[1] + offsetY]);
+        let squareRotated = [];
+        let rads = Util.toRadians(player.angle);
+        for (let i = 0; i < square.length; i++) {
+            let x = square[i][0];
+            let y = square[i][1];
+            
+            let rotatedX = x * Math.cos(rads) - y * Math.sin(rads);
+            let rotatedY = x * Math.sin(rads) + y * Math.cos(rads);
+            
+            squareRotated.push([
+                pos.x + rotatedX,
+                pos.y + rotatedY,
+                4,
+                "#2d2f33"
+            ]);
+        }
+        drawPolygon(ctx, squareRotated);
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    function drawPolygon(ctx, data) {
+        ctx.beginPath();
+        ctx.moveTo(data[0][0], data[0][1]);
+        for (let i = 0; i < data.length; i++) {
+            ctx.lineWidth = data[i][2];
+            ctx.strokeStyle = data[i][3];
+            ctx.lineTo(data[i][0], data[i][1]);
+        }
+        ctx.stroke();
+        ctx.closePath();
     }
 
     function drawHud() {
@@ -352,8 +462,8 @@
 
     function getRelPos(x, y, width, height) {
         return {
-            x: x - game.self.x,
-            y: y - game.self.y
+            x: x - game.self.x + Util.roundTowardZero(game.self.spdX * 0.4) + width / 2,
+            y: y - game.self.y + Util.roundTowardZero(game.self.spdY * 0.4) + height / 2
         };
     }
 
@@ -373,6 +483,7 @@
         game = new Game(socket);
     }
     window.mousePos = [0, 0];
+    window.mouseAngle = 0;
     window.mouseEvents = [];
 
     let asmConstsOverride = setInterval(() => {
@@ -387,6 +498,32 @@
                     }
                 }
                 contexts[$0].arc($1 , $2 , $3 , $4, $5);
+            }
+            ASM_CONSTS[139420] = function($0, $1, $2) {
+                var socket = sockets[$0];
+                if (!socket) {
+                    return;
+                }
+                if (socket.readyState != 1) {
+                    return;
+                } else {
+                    var str = UTF8ToString($1);
+                    if (str[0] == "m") {
+                        let parts = str.split(",");
+                        let x = +parts[1];
+                        let y = +parts[2];
+                        let angle = +parts[3];
+                        window.mouseAngle = (Math.round(angle + Math.asin(18 / Math.sqrt(x * x + y * y)) * 180 / Math.PI) + 1) % 360;
+                    }
+                    var ptr = Module._malloc($2);
+                    Module.stringToUTF8(str, ptr, $2 * 4);
+                    try {
+                        sockets[$0].send(HEAP8.subarray(ptr, ptr + $2));
+                        Module._free(ptr);
+                    } catch (e) {
+                        return;
+                    }
+                }
             }
             clearInterval(asmConstsOverride);
         }

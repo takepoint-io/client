@@ -940,7 +940,7 @@ var ASM_CONSTS = {
                     Module.switchServers(window.serverName);
                 }, 500);
             }
-            window.mousePos = [event.clientX, event.clientY];         
+            window.mousePos = [event.clientX, event.clientY];
         };
         document.onmousedown = function (event) {
             if (!window.hovering) Module.onmousedown(event.clientX, event.clientY, event.which);
