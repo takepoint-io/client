@@ -78,6 +78,7 @@
         constructor(id) {
             this.id = id;
             this.name = Game.weaponNames[this.id];
+            this.reloading = false;
             this.attachment = null;
         }
         setAttachment(id) {
@@ -138,11 +139,11 @@
                     break;
                 }
                 case "a": {
-                    let playerID = +parts[1];
-                    let teamCode = +parts[2];
-                    let weaponID = +parts[3];
-                    let x = +parts[4];
-                    let y = +parts[5];
+                    let playerID = parseInt(parts[1]);
+                    let teamCode = parseInt(parts[2]);
+                    let weaponID = parseInt(parts[3]);
+                    let x = parseInt(parts[4]);
+                    let y = parseInt(parts[5]);
                     game.myID = playerID;
                     let player = new Player(playerID, x, y, 0, 0, 0, weaponID);
                     game.players.set(player.id, player);
@@ -150,13 +151,13 @@
                     break;
                 }
                 case "b": {
-                    let playerID = +parts[1];
-                    let x = +parts[2];
-                    let y = +parts[3];
-                    let spdX = +parts[4];
-                    let spdY = +parts[5];
-                    let angle = +parts[6];
-                    let weaponAttachmentID = +parts[7];
+                    let playerID = parseInt(parts[1]);
+                    let x = parseInt(parts[2]);
+                    let y = parseInt(parts[3]);
+                    let spdX = parseInt(parts[4]);
+                    let spdY = parseInt(parts[5]);
+                    let angle = parseInt(parts[6]);
+                    let weaponAttachmentID = parseInt(parts[7]);
                     let player;
                     if (playerID == game.myID || (!game.myID && playerStateCount == 0)) player = game.self;
                     else player = game.players.get(playerID);
@@ -169,21 +170,32 @@
                     playerStateCount++;
                     break;
                 }
+                case "c": {
+                    let playerID = parseInt(parts[1]);
+                    let reloading = parseInt(parts[3]);
+                    let deathFrame = parseInt(parts[7]);
+                    let player;
+                    if (playerID == game.myID) player = game.self;
+                    else player = game.players.get(playerID);
+                    if (!isNaN(reloading)) player.weapon.reloading = reloading;
+                    if (!isNaN(deathFrame)) player.alive = false;
+                    break;
+                }
                 case "d": {
-                    let playerID = +parts[1];
-                    let teamCode = +parts[2];
-                    let weaponID = +parts[3];
-                    let x = +parts[4];
-                    let y = +parts[5];
-                    let angle = +parts[7];
-                    let weaponAttachmentID = +parts[17];
+                    let playerID = parseInt(parts[1]);
+                    let teamCode = parseInt(parts[2]);
+                    let weaponID = parseInt(parts[3]);
+                    let x = parseInt(parts[4]);
+                    let y = parseInt(parts[5]);
+                    let angle = parseInt(parts[7]);
+                    let weaponAttachmentID = parseInt(parts[17]);
                     let player = new Player(playerID, x, y, 0, 0, angle, weaponID);
                     if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
                     game.players.set(player.id, player);
                     break;
                 }
                 case "e": {
-                    let playerID = +parts[1];
+                    let playerID = parseInt(parts[1]);
                     if (playerID == game.myID) {
                         game.attachment.available = 0;
                         game.attachment.toDraw = [];
@@ -192,8 +204,8 @@
                     break;
                 }
                 case "f": {
-                    let weaponID = +parts[11];
-                    let attachmentAvailable = +parts[14];
+                    let weaponID = parseInt(parts[11]);
+                    let attachmentAvailable = parseInt(parts[14]);
                     if (!game.self) return;
                     if (weaponID) {
                         game.self.weapon = new Weapon(weaponID);
@@ -227,25 +239,25 @@
                     break;
                 }
                 case "m": {
-                    let grenadeID = +parts[1];
-                    let type = +parts[2];
-                    let x = +parts[3];
-                    let y = +parts[4];
-                    let teamCode = +parts[8];
+                    let grenadeID = parseInt(parts[1]);
+                    let type = parseInt(parts[2]);
+                    let x = parseInt(parts[3]);
+                    let y = parseInt(parts[4]);
+                    let teamCode = parseInt(parts[8]);
                     let grenade = new Throwable(grenadeID, type, x, y, 0, teamCode);
                     game.throwables.set(grenadeID, grenade);
                     break;
                 }
                 case "n": {
-                    let grenadeID = +parts[1];
-                    let x = +parts[2];
-                    let y = +parts[3];
-                    let radius = +parts[8];
+                    let grenadeID = parseInt(parts[1]);
+                    let x = parseInt(parts[2]);
+                    let y = parseInt(parts[3]);
+                    let radius = parseInt(parts[8]);
                     game.throwables.get(grenadeID).update(x, y, radius);
                     break;
                 }
                 case "o": {
-                    let grenadeID = +parts[1];
+                    let grenadeID = parseInt(parts[1]);
                     game.throwables.delete(grenadeID);
                     break;
                 }
@@ -320,7 +332,7 @@
     }
 
     function drawAttachments(ctx, player, width, height) {
-        if (!player.alive || !player.weapon.attachment) return;
+        if (!player.alive || !player.weapon.attachment || player.weapon.reloading) return;
         let attachment = player.weapon.attachment;
         let playerRelative = getRelPos(player.x, player.y, width, height);
         let weaponPos = player.calcWeaponPos();
@@ -510,9 +522,9 @@
                     var str = UTF8ToString($1);
                     if (str[0] == "m") {
                         let parts = str.split(",");
-                        let x = +parts[1];
-                        let y = +parts[2];
-                        let angle = +parts[3];
+                        let x = parseInt(parts[1]);
+                        let y = parseInt(parts[2]);
+                        let angle = parseInt(parts[3]);
                         window.mouseAngle = (Math.round(angle + Math.asin(18 / Math.sqrt(x * x + y * y)) * 180 / Math.PI) + 1) % 360;
                     }
                     var ptr = Module._malloc($2);
