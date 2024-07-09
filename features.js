@@ -79,7 +79,12 @@
             this.id = id;
             this.name = Game.weaponNames[this.id];
             this.reloading = false;
+            this.firing = false;
+            this.firingFrame = 0;
             this.attachment = null;
+        }
+        update() {
+            if (this.firing) this.firingFrame++;
         }
         setAttachment(id) {
             switch (this.name) {
@@ -157,27 +162,33 @@
                     let spdX = parseInt(parts[4]);
                     let spdY = parseInt(parts[5]);
                     let angle = parseInt(parts[6]);
-                    let weaponAttachmentID = parseInt(parts[7]);
                     let player;
-                    if (playerID == game.myID || (!game.myID && playerStateCount == 0)) player = game.self;
+                    if (playerID == game.myID || (!game.myID && playerStateCount == 0)) {
+                        player = game.self;
+                        game.myID = playerID;
+                    }
                     else player = game.players.get(playerID);
                     player.x = x;
                     player.y = y;
                     player.spdX = spdX;
                     player.spdY = spdY;
                     player.angle = angle;
-                    if (weaponAttachmentID) player.weapon.setAttachment(weaponAttachmentID);
                     playerStateCount++;
                     break;
                 }
                 case "c": {
                     let playerID = parseInt(parts[1]);
+                    let firing = parseInt(parts[2]);
                     let reloading = parseInt(parts[3]);
                     let deathFrame = parseInt(parts[7]);
                     let player;
                     if (playerID == game.myID) player = game.self;
                     else player = game.players.get(playerID);
-                    if (!isNaN(reloading)) player.weapon.reloading = reloading;
+                    if (!isNaN(firing)) {
+                        player.weapon.firing = Boolean(firing);
+                        if (player.weapon.firing) player.weapon.firingFrame = 0;
+                    }
+                    if (!isNaN(reloading)) player.weapon.reloading = Boolean(reloading);
                     if (!isNaN(deathFrame)) player.alive = false;
                     break;
                 }
@@ -185,7 +196,7 @@
                     let playerID = parseInt(parts[1]);
                     let teamCode = parseInt(parts[2]);
                     let weaponID = parseInt(parts[3]);
-                    let x = parseInt(parts[4]);
+                    let x = parseInt(parts[4]);  
                     let y = parseInt(parts[5]);
                     let angle = parseInt(parts[7]);
                     let weaponAttachmentID = parseInt(parts[17]);
@@ -206,10 +217,10 @@
                 case "f": {
                     let weaponID = parseInt(parts[11]);
                     let attachmentAvailable = parseInt(parts[14]);
+                    let attachmentID = parseInt(parts[15]);
                     if (!game.self) return;
-                    if (weaponID) {
-                        game.self.weapon = new Weapon(weaponID);
-                    }
+                    if (weaponID) game.self.weapon = new Weapon(weaponID);
+                    if (attachmentID) game.self.weapon.setAttachment(attachmentID);
                     if (attachmentAvailable === 0 || attachmentAvailable === 1) {
                         game.attachment.available = attachmentAvailable;
                         switch (game.self.weapon.name) {
@@ -301,6 +312,7 @@
             game.self.angle = window.mouseAngle;
         }
         updatePositions();
+        updateWeapons();
         drawWeapons();
         drawHud();
         postDraw: {
@@ -320,6 +332,14 @@
         self.y += Util.roundTowardZero(self.spdY * 0.4);
     }
 
+    function updateWeapons() {
+        for (let [id, player] of game.players) {
+            if (id == game.myID) continue;
+            player.weapon.update();
+        }
+        game.self.weapon.update();
+    }
+
     function drawWeapons() {
         let ctx = game.canvas;
         let canvasHeight = (ctx.canvas.height / window.devicePixelRatio) / window.canvasScale;
@@ -332,15 +352,56 @@
     }
 
     function drawAttachments(ctx, player, width, height) {
-        if (!player.alive || !player.weapon.attachment || player.weapon.reloading) return;
+        if (!player.alive || !player.weapon.attachment) return;
         let attachment = player.weapon.attachment;
         let playerRelative = getRelPos(player.x, player.y, width, height);
         let weaponPos = player.calcWeaponPos();
         let squarePos = { x: playerRelative.x + weaponPos.x, y: playerRelative.y + weaponPos.y };
-        drawAttachmentSquare(ctx, player, squarePos, attachment.color);
+        if (!player.weapon.reloading) drawAttachmentSquare(ctx, player, squarePos, attachment.color);
         if (attachment.name == "longBarrel") {
-
+            drawExtendedBarrel(ctx, player, playerRelative);
         }
+    }
+
+    function drawExtendedBarrel(ctx, player, pos) {
+        let weapon = player.weapon;
+        let extendedBarrel = [
+            [86, 20],
+            [86, 23],
+            [113, 23],
+            [113, 20],
+            [86, 20]
+        ];
+        if (weapon.firing) {
+            if (weapon.firingFrame < 6) {
+                extendedBarrel[2][1] = 23 + weapon.firingFrame * 0.05;
+                extendedBarrel[3][1] = 19 - weapon.firingFrame * 0.05;
+                for (let i = 0; i < extendedBarrel.length; i++) {
+                    extendedBarrel[i][0] -= weapon.firingFrame * 0.25;
+                }
+            } else if (weapon.firingFrame < 12) {
+                let frame = weapon.firingFrame - 5;
+                extendedBarrel[2][1] = 23 + (6 - frame) * 0.05;
+                console.log(extendedBarrel[2][1]);
+                extendedBarrel[3][1] = 19 - (6 - frame) * 0.05;
+                for (let i = 0; i < extendedBarrel.length; i++) {
+                    extendedBarrel[i][0] -= (6 - frame) * 0.25;
+                }
+            }
+        } else if (weapon.reloading) {
+            extendedBarrel = [
+                [87, 28.5],
+                [87, 30.5],
+                [114, 30.5],
+                [114, 28.5],
+                [87, 28.5]
+            ]
+        }
+        let rads = Util.toRadians(player.angle);
+        let barrelRotated = rotatePolygon(extendedBarrel, rads, pos, 3);
+        drawPolygon(ctx, barrelRotated);
+        ctx.fillStyle = "#565a5e";
+        ctx.fill();
     }
 
     function drawAttachmentSquare(ctx, player, pos, color) {
@@ -365,27 +426,32 @@
             [0, 5],
             [9, 5],
             [9, 0],
-            [-2, 0]
+            [-1.5, 0]
         ].map((e) => [e[0] + offsetX, e[1] + offsetY]);
-        let squareRotated = [];
         let rads = Util.toRadians(player.angle);
-        for (let i = 0; i < square.length; i++) {
-            let x = square[i][0];
-            let y = square[i][1];
+        let squareRotated = rotatePolygon(square, rads, pos, 3);
+        drawPolygon(ctx, squareRotated);
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    function rotatePolygon(polygon, rads, pos, lineWidth=4, border="#2d2f33") {
+        let polygonRotated = [];
+        for (let i = 0; i < polygon.length; i++) {
+            let x = polygon[i][0];
+            let y = polygon[i][1];
             
             let rotatedX = x * Math.cos(rads) - y * Math.sin(rads);
             let rotatedY = x * Math.sin(rads) + y * Math.cos(rads);
             
-            squareRotated.push([
+            polygonRotated.push([
                 pos.x + rotatedX,
                 pos.y + rotatedY,
-                4,
-                "#2d2f33"
+                lineWidth,
+                border
             ]);
         }
-        drawPolygon(ctx, squareRotated);
-        ctx.fillStyle = color;
-        ctx.fill();
+        return polygonRotated;
     }
 
     function drawPolygon(ctx, data) {
@@ -497,7 +563,6 @@
     window.mousePos = [0, 0];
     window.mouseAngle = 0;
     window.mouseEvents = [];
-
     let asmConstsOverride = setInterval(() => {
         if (ASM_CONSTS) {
             ASM_CONSTS[135336] = function($0, $1, $2, $3, $4, $5) {
@@ -510,6 +575,9 @@
                     }
                 }
                 contexts[$0].arc($1 , $2 , $3 , $4, $5);
+            }
+            ASM_CONSTS[135507] = function($0, $1, $2) {
+                contexts[$0].lineTo($1, $2);
             }
             ASM_CONSTS[139420] = function($0, $1, $2) {
                 var socket = sockets[$0];
@@ -524,8 +592,10 @@
                         let parts = str.split(",");
                         let x = parseInt(parts[1]);
                         let y = parseInt(parts[2]);
-                        let angle = parseInt(parts[3]);
-                        window.mouseAngle = (Math.round(angle + Math.asin(18 / Math.sqrt(x * x + y * y)) * 180 / Math.PI) + 1) % 360;
+                        let testAngle = (Math.atan2(y, x) * (180 / Math.PI) + 540) % 360;
+                        let calculatedAngle = Math.round((testAngle + Math.asin(18 / Math.sqrt(x * x + y * y)) * 180 / Math.PI)) % 360;
+                        calculatedAngle += (360 - calculatedAngle) * 0.001;
+                        if (calculatedAngle) window.mouseAngle = calculatedAngle;
                     }
                     var ptr = Module._malloc($2);
                     Module.stringToUTF8(str, ptr, $2 * 4);
