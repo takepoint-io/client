@@ -4639,14 +4639,14 @@ function readAsmConstArgs(sigPtr, buf) {
 }
 function _emscripten_asm_const_int(code, sigPtr, argbuf) {
     var args = readAsmConstArgs(sigPtr, argbuf);
-    if (devSettings.logASMCalls) {
+    /*if (devSettings.logASMCalls) {
         if (asmCommonTable[code]) {
             asmCommonTable[code](args);
         }
         else {
             console.log(code, args);
         }
-    }
+    }*/
     if (!ASM_CONSTS.hasOwnProperty(code)) {
         abort("No EM_ASM constant found at address " + code);
     }
