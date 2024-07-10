@@ -85,6 +85,7 @@
         }
         update() {
             if (this.firing) this.firingFrame++;
+            if (this.reloading) this.reloadingFrame++;
         }
         setAttachment(id) {
             switch (this.name) {
@@ -188,7 +189,10 @@
                         player.weapon.firing = Boolean(firing);
                         if (player.weapon.firing) player.weapon.firingFrame = 0;
                     }
-                    if (!isNaN(reloading)) player.weapon.reloading = Boolean(reloading);
+                    if (!isNaN(reloading)) {
+                        player.weapon.reloading = Boolean(reloading)
+                        if (player.weapon.reloading) player.weapon.reloadingFrame = 0;
+                    };
                     if (!isNaN(deathFrame)) player.alive = false;
                     break;
                 }
@@ -388,7 +392,7 @@
                     extendedBarrel[i][0] -= (6 - frame) * 0.25;
                 }
             }
-        } else if (weapon.reloading) {
+        } else if (weapon.reloading && weapon.reloadingFrame < 100) {
             extendedBarrel = [
                 [87, 28.5],
                 [87, 30.5],
