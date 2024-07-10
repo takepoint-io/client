@@ -91,6 +91,7 @@
             switch (this.name) {
                 case "assault":
                     if (id == 1) this.attachment = {name: "fireRate", color: "#ffa54e"};
+                    else if (id == 2) this.attachment = {name: "unlimitedAmmo", color: "#f060dd"};
                     break;
                 case "sniper":
                     if (id == 1) this.attachment = {name: "highImpact", color: "#95ffe9"};
@@ -233,6 +234,11 @@
                                     name: "Rapid Fire",
                                     id: 1,
                                     prop: "fireRate"
+                                });
+                                game.attachment.toDraw.push({
+                                    name: "Unlimited Ammo",
+                                    id: 2,
+                                    prop: "unlimitedAmmo"
                                 });
                                 break;
                             case "sniper":
