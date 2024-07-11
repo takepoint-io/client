@@ -398,7 +398,7 @@
                     extendedBarrel[i][0] -= (6 - frame) * 0.25;
                 }
             }
-        } else if (weapon.reloading && weapon.reloadingFrame < 100) {
+        } else if (weapon.reloading && weapon.reloadingFrame < 115) {
             extendedBarrel = [
                 [87, 28.5],
                 [87, 30.5],
@@ -559,7 +559,8 @@
     let game;
 
     let images = {};
-    ["highImpact", "longBarrel", "fireRate"].forEach(n => {
+    ["highImpact", "longBarrel", 
+    "fireRate", "unlimitedAmmo"].forEach(n => {
         let img = new Image();
         img.src = '/img/' + n + '.svg';
         img.onload = function() {
