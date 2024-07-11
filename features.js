@@ -371,7 +371,7 @@
         let weaponPos = player.calcWeaponPos();
         let squarePos = { x: playerRelative.x + weaponPos.x, y: playerRelative.y + weaponPos.y };
         if (!player.weapon.reloading) drawAttachmentSquare(ctx, player, squarePos, attachment.color);
-        if (attachment.name == "longBarrel") {
+        if (attachment.prop == "longBarrel") {
             drawExtendedBarrel(ctx, player, playerRelative);
         }
     }
