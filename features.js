@@ -90,17 +90,33 @@
         setAttachment(id) {
             switch (this.name) {
                 case "assault":
-                    if (id == 1) this.attachment = {name: "fireRate", color: "#ffa54e"};
-                    else if (id == 2) this.attachment = {name: "unlimitedAmmo", color: "#f060dd"};
+                    if (id == 1) this.attachment = Game.attachments.fireRate;
+                    else if (id == 2) this.attachment = Game.attachments.unlimitedAmmo;
                     break;
                 case "sniper":
-                    if (id == 1) this.attachment = {name: "highImpact", color: "#95ffe9"};
+                    if (id == 1) this.attachment = Game.attachments.highImpact;
                     break;
                 case "shotgun":
-                    if (id == 1) this.attachment = {name: "longBarrel", color: "#95b1ff"};
+                    if (id == 1) this.attachment = Game.attachments.longBarrel;
                     break;
             }
         }
+    }
+
+    class Attachment {
+        constructor(...args) {
+            this.id = args[0];
+            this.name = args[1];
+            this.prop = args[2];
+            this.color = args[3];
+        }
+    }
+
+    Game.attachments = {
+        fireRate:      new Attachment(1, "Rapid Fire", "fireRate", "#ffa54e"),
+        unlimitedAmmo: new Attachment(2, "Unlimited Ammo", "unlimitedAmmo", "#f060dd"),
+        highImpact:    new Attachment(1, "High Impact", "highImpact", "#95ffe9"),
+        longBarrel:    new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff")
     }
 
     class Throwable {
@@ -230,30 +246,14 @@
                         game.attachment.available = attachmentAvailable;
                         switch (game.self.weapon.name) {
                             case "assault":
-                                game.attachment.toDraw.push({
-                                    name: "Rapid Fire",
-                                    id: 1,
-                                    prop: "fireRate"
-                                });
-                                game.attachment.toDraw.push({
-                                    name: "Unlimited Ammo",
-                                    id: 2,
-                                    prop: "unlimitedAmmo"
-                                });
+                                game.attachment.toDraw.push(Game.attachments.fireRate);
+                                game.attachment.toDraw.push(Game.attachments.unlimitedAmmo);
                                 break;
                             case "sniper":
-                                game.attachment.toDraw.push({
-                                    name: "High Impact",
-                                    id: 1,
-                                    prop: "highImpact"
-                                });
+                                game.attachment.toDraw.push(Game.attachments.highImpact);
                                 break;
                             case "shotgun":
-                                game.attachment.toDraw.push({
-                                    name: "Longer Barrel",
-                                    id: 1,
-                                    prop: "longBarrel"
-                                });
+                                game.attachment.toDraw.push(Game.attachments.longBarrel);
                                 break;
                         }
                     }
@@ -557,17 +557,17 @@
 
     //Init
     let game;
-
     let images = {};
-    ["highImpact", "longBarrel", 
-    "fireRate", "unlimitedAmmo"].forEach(n => {
-        let img = new Image();
-        img.src = '/img/' + n + '.svg';
-        img.onload = function() {
-            images[n] = img;
-        }
-    });
-
+    window.addEventListener("load", () => {
+        ["highImpact", "longBarrel", 
+        "fireRate", "unlimitedAmmo"].forEach(n => {
+            let img = new Image();
+            img.src = '/img/' + n + '.svg';
+            img.onload = function() {
+                images[n] = img;
+            }
+        });
+    })
     window.hookWS = function(socket) {
         game = new Game(socket);
     }
