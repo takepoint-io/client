@@ -95,6 +95,7 @@
                     break;
                 case "sniper":
                     if (id == 1) this.attachment = Game.attachments.highImpact;
+                    else if (id == 2) this.attachment = Game.attachments.explosiveRounds;
                     break;
                 case "shotgun":
                     if (id == 1) this.attachment = Game.attachments.longBarrel;
@@ -113,10 +114,11 @@
     }
 
     Game.attachments = {
-        fireRate:      new Attachment(1, "Rapid Fire", "fireRate", "#ffa54e"),
-        unlimitedAmmo: new Attachment(2, "Unlimited Ammo", "unlimitedAmmo", "#f060dd"),
-        highImpact:    new Attachment(1, "High Impact", "highImpact", "#95ffe9"),
-        longBarrel:    new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff")
+        fireRate:        new Attachment(1, "Rapid Fire", "fireRate", "#ffa54e"),
+        unlimitedAmmo:   new Attachment(2, "Unlimited Ammo", "unlimitedAmmo", "#f060dd"),
+        highImpact:      new Attachment(1, "High Impact", "highImpact", "#95ffe9"),
+        explosiveRounds: new Attachment(2, "Explosive Rounds", "explosiveRounds", "#77804f"),
+        longBarrel:      new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff")
     }
 
     class Throwable {
@@ -251,6 +253,7 @@
                                 break;
                             case "sniper":
                                 game.attachment.toDraw.push(Game.attachments.highImpact);
+                                game.attachment.toDraw.push(Game.attachments.explosiveRounds);
                                 break;
                             case "shotgun":
                                 game.attachment.toDraw.push(Game.attachments.longBarrel);
@@ -560,7 +563,8 @@
     let images = {};
     window.addEventListener("load", () => {
         ["highImpact", "longBarrel", 
-        "fireRate", "unlimitedAmmo"].forEach(n => {
+        "fireRate", "unlimitedAmmo",
+        "explosiveRounds"].forEach(n => {
             let img = new Image();
             img.src = '/img/' + n + '.svg';
             img.onload = function() {
