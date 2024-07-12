@@ -117,8 +117,9 @@
         fireRate:        new Attachment(1, "Rapid Fire", "fireRate", "#ffa54e"),
         unlimitedAmmo:   new Attachment(2, "Unlimited Ammo", "unlimitedAmmo", "#f060dd"),
         highImpact:      new Attachment(1, "High Impact", "highImpact", "#95ffe9"),
-        explosiveRounds: new Attachment(2, "Explosive Rounds", "explosiveRounds", "#77804f"),
-        longBarrel:      new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff")
+        explosiveRounds: new Attachment(2, "Explosive Rounds", "explosiveRounds", "#95ff98"),
+        longBarrel:      new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff"),
+        droneLauncher:   new Attachment(2, "Drone Launcher", "droneLauncher", "#000000")
     }
 
     class Throwable {
@@ -257,6 +258,7 @@
                                 break;
                             case "shotgun":
                                 game.attachment.toDraw.push(Game.attachments.longBarrel);
+                                game.attachment.toDraw.push(Game.attachments.droneLauncher);
                                 break;
                         }
                     }
