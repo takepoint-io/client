@@ -99,6 +99,7 @@
                     break;
                 case "shotgun":
                     if (id == 1) this.attachment = Game.attachments.longBarrel;
+                    else if (id == 2) this.attachment = Game.attachments.droneLauncher;
                     break;
             }
         }
@@ -119,7 +120,7 @@
         highImpact:      new Attachment(1, "High Impact", "highImpact", "#95ffe9"),
         explosiveRounds: new Attachment(2, "Explosive Rounds", "explosiveRounds", "#95ff98"),
         longBarrel:      new Attachment(1, "Longer Barrel", "longBarrel", "#95b1ff"),
-        droneLauncher:   new Attachment(2, "Drone Launcher", "droneLauncher", "#000000")
+        droneLauncher:   new Attachment(2, "Drone Launcher", "droneLauncher", "#fff795")
     }
 
     class Throwable {
@@ -521,8 +522,8 @@
                 hud.globalAlpha = 0.5;
                 hud.fillStyle = "#b4b4b4"
                 if (hovering) {
-                    hud.globalAlpha = 1;
-                    hud.fillStyle = "#d3d3d3";
+                    //hud.globalAlpha = 1;
+                    hud.fillStyle = choice.color;
                     ASM_CONSTS[134836]();
                 }
                 hud.fill();
