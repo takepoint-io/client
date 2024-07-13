@@ -567,7 +567,7 @@
     window.addEventListener("load", () => {
         ["highImpact", "longBarrel", 
         "fireRate", "unlimitedAmmo",
-        "explosiveRounds"].forEach(n => {
+        "explosiveRounds", "droneLauncher"].forEach(n => {
             let img = new Image();
             img.src = '/img/' + n + '.svg';
             img.onload = function() {
