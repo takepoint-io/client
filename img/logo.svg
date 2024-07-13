@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="590.525px"
+   height="108.6177001953125px"
+   viewBox="-45.26249999999999 20.691149902343753 590.525 108.6177001953125"
+   style="background: rgba(5, 17, 3, 0);"
+   preserveAspectRatio="xMidYMid"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.0248668"
+     inkscape:cx="265.88821"
+     inkscape:cy="62.44714"
+     inkscape:window-width="1312"
+     inkscape:window-height="449"
+     inkscape:window-x="102"
+     inkscape:window-y="254"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4" />
+  <defs
+     id="defs3">
+    <linearGradient
+       id="editing-glowing-gradient"
+       x1="6.2954819"
+       x2="158.76748"
+       y1="-74.518772"
+       y2="-12.916084"
+       gradientTransform="scale(2.5299438,0.3952657)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#ffaa73"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#73aaff"
+         id="stop2" />
+    </linearGradient>
+    <filter
+       id="editing-glowing"
+       x="-0.0012047032"
+       y="-0.0078125"
+       width="1.0024094"
+       height="1.015625">
+      <feGaussianBlur
+         in="SourceGraphic"
+         result="blur"
+         stdDeviation="0"
+         id="feGaussianBlur2" />
+      <feMerge
+         id="feMerge3">
+        <feMergeNode
+           in="blur"
+           id="feMergeNode2" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode3" />
+      </feMerge>
+    </filter>
+  </defs>
+  <g
+     filter="url(#editing-glowing)"
+     id="g4"
+     style="stroke:#000000;stroke-opacity:1;stroke-width:0.36159845;stroke-dasharray:none;stroke-dashoffset:0"
+     transform="matrix(1.3827493,0,0,1.3827493,-96.078209,-46.369697)">
+    <g
+       transform="translate(41.199984,106.40525)"
+       id="g3"
+       style="stroke:#000000;stroke-opacity:1;stroke-width:0.36159845;stroke-dasharray:none;stroke-dashoffset:0">
+      <path
+         d="m 1.28,-40.9 v -5.18 h 46.08 v 5.18 H 26.94 V 0 h -5.18 v -40.9 z m 50.62,3.78 h 30.02 v 0 q 3.26,0 5.54,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 V 0 H 59.65 v 0 q -3.2,0 -5.47,-2.27 v 0 0 Q 51.9,-4.54 51.9,-7.74 v 0 -13.44 h 32.52 v -8.2 0 q 0,-1.02 -0.74,-1.76 v 0 0 q -0.74,-0.73 -1.76,-0.73 v 0 H 51.9 Z m 7.75,31.87 H 84.42 V -15.94 H 57.15 v 8.2 0 q 0,1.02 0.74,1.76 v 0 0 q 0.73,0.73 1.76,0.73 z m 52.29,-15.93 14.59,-15.94 h 6.91 L 116.61,-18.56 133.38,0 h -6.85 L 111.94,-15.94 H 101.7 V 0 h -5.25 v -49.28 h 5.25 v 28.1 z m 33.08,-15.94 h 22.28 v 0 q 3.26,0 5.53,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 13.44 h -32.57 v 8.2 0 q 0,1.02 0.73,1.76 v 0 0 q 0.74,0.73 1.76,0.73 v 0 H 175.1 V 0 h -30.08 v 0 q -3.2,0 -5.47,-2.27 v 0 0 q -2.27,-2.27 -2.27,-5.47 v 0 -21.64 0 q 0,-3.2 2.27,-5.47 v 0 0 q 2.27,-2.27 5.47,-2.27 z m -2.49,7.74 v 8.2 h 27.26 v -8.2 0 q 0,-1.02 -0.73,-1.76 v 0 0 q -0.74,-0.73 -1.76,-0.73 v 0 h -22.28 v 0 q -1.02,0 -1.76,0.73 v 0 0 q -0.73,0.74 -0.73,1.76 z m 39.23,-7.74 h 30.08 v 0 q 3.2,0 5.47,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 21.64 0 q 0,3.2 -2.27,5.47 v 0 0 Q 215.04,0 211.84,0 v 0 h -24.83 v 14.72 h -5.25 z m 32.58,29.38 v 0 -21.64 0 q 0,-1.02 -0.74,-1.76 v 0 0 q -0.74,-0.73 -1.76,-0.73 v 0 h -22.27 v 0 q -1.03,0 -1.79,0.73 v 0 0 q -0.77,0.74 -0.77,1.76 v 0 21.64 0 q 0,1.02 0.77,1.76 v 0 0 q 0.76,0.73 1.79,0.73 v 0 h 22.27 v 0 q 1.02,0 1.76,-0.73 v 0 0 q 0.74,-0.74 0.74,-1.76 z m 17.47,-29.38 v 0 h 22.27 v 0 q 3.26,0 5.54,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 21.64 0 q 0,3.2 -2.27,5.47 v 0 0 Q 257.34,0 254.08,0 v 0 h -22.27 v 0 q -3.2,0 -5.47,-2.27 v 0 0 q -2.28,-2.27 -2.28,-5.47 v 0 -21.64 0 q 0,-3.2 2.28,-5.47 v 0 0 q 2.27,-2.27 5.47,-2.27 z m 22.27,5.25 v 0 h -22.27 v 0 q -1.03,0 -1.76,0.73 v 0 0 q -0.74,0.74 -0.74,1.76 v 0 21.64 0 q 0,1.02 0.74,1.76 v 0 0 q 0.73,0.73 1.76,0.73 v 0 h 22.27 v 0 q 1.02,0 1.76,-0.73 v 0 0 q 0.74,-0.74 0.74,-1.76 v 0 -21.64 0 q 0,-1.02 -0.74,-1.76 v 0 0 q -0.74,-0.73 -1.76,-0.73 z M 273.66,0 h -5.24 v -37.12 h 5.24 z m -5.24,-44.03 v -5.25 h 5.24 v 5.25 z m 12.48,6.91 h 30.08 v 0 q 3.2,0 5.47,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 V 0 h -5.25 v -29.38 0 q 0,-1.02 -0.73,-1.76 v 0 0 q -0.74,-0.73 -1.76,-0.73 v 0 H 288.7 v 0 q -1.02,0 -1.79,0.73 v 0 0 q -0.77,0.74 -0.77,1.76 v 0 V 0 h -5.24 z m 65.79,0 v 5.25 h -16.07 v 24.13 0 q 0,1.02 0.74,1.76 v 0 0 q 0.74,0.73 1.76,0.73 v 0 h 13.57 V 0 h -13.57 v 0 q -3.26,0 -5.5,-2.27 v 0 0 q -2.24,-2.27 -2.24,-5.47 v 0 -41.54 h 5.24 v 12.16 z m 4.99,31.87 h 5.25 V 0 h -5.25 z M 370.5,0 h -5.25 v -37.12 h 5.25 z m -5.25,-44.03 v -5.25 h 5.25 v 5.25 z m 20.99,6.91 v 0 h 22.27 v 0 q 3.27,0 5.54,2.27 v 0 0 q 2.27,2.27 2.27,5.47 v 0 21.64 0 q 0,3.2 -2.27,5.47 v 0 0 Q 411.78,0 408.51,0 v 0 h -22.27 v 0 q -3.2,0 -5.47,-2.27 v 0 0 q -2.27,-2.27 -2.27,-5.47 v 0 -21.64 0 q 0,-3.2 2.27,-5.47 v 0 0 q 2.27,-2.27 5.47,-2.27 z m 22.27,5.25 v 0 h -22.27 v 0 q -1.02,0 -1.76,0.73 v 0 0 q -0.74,0.74 -0.74,1.76 v 0 21.64 0 q 0,1.02 0.74,1.76 v 0 0 q 0.74,0.73 1.76,0.73 v 0 h 22.27 v 0 q 1.03,0 1.76,-0.73 v 0 0 q 0.74,-0.74 0.74,-1.76 v 0 -21.64 0 q 0,-1.02 -0.74,-1.76 v 0 0 q -0.73,-0.73 -1.76,-0.73 z"
+         fill="url(#editing-glowing-gradient)"
+         id="path3"
+         style="fill:url(#editing-glowing-gradient);stroke:#000000;stroke-opacity:1;stroke-width:0.36159845;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+  </g>
+  <style
+     id="style4">text {
+  font-size: 64px;
+  font-family: Arial Black;
+  dominant-baseline: central;
+  text-anchor: middle;
+}</style>
+</svg>
