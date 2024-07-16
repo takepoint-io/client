@@ -562,7 +562,7 @@
     }
 
     //Init
-    let game;
+    let game = {};
     let images = {};
     window.addEventListener("load", () => {
         ["highImpact", "longBarrel", 
@@ -628,4 +628,18 @@
             clearInterval(asmConstsOverride);
         }
     }, 16);
+
+    const channel = new BroadcastChannel("_");
+    const ts = Date.now();
+    setInterval(() => channel.postMessage(ts), 3000);
+    channel.onmessage = (ev) => { 
+        if (ev.data < ts && game.socket) {
+            game.socket.close();
+            const t = new Uint8Array(new TextEncoder().encode("t"));
+            const b = Module._malloc(t.length);
+            writeArrayToMemory(t, b);
+            game.socket.events.push([b, t.length, Module.getClientTime()]);
+            window.reconnecting = true;
+        }
+    }
 })();
