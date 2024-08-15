@@ -441,8 +441,6 @@ html {
 
 #a-bottom-respawn {
     display: flex;
-    width: 970px;
-    height: 250px;
     padding: 10px;
     border-radius: 8px;
     align-items: center;
