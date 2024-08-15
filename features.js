@@ -398,7 +398,6 @@
             } else if (weapon.firingFrame < 12) {
                 let frame = weapon.firingFrame - 5;
                 extendedBarrel[2][1] = 23 + (6 - frame) * 0.05;
-                console.log(extendedBarrel[2][1]);
                 extendedBarrel[3][1] = 19 - (6 - frame) * 0.05;
                 for (let i = 0; i < extendedBarrel.length; i++) {
                     extendedBarrel[i][0] -= (6 - frame) * 0.25;
