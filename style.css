@@ -440,8 +440,8 @@ html {
 }
 
 #a-bottom-respawn {
-    width: 100%;
-    height: 100%;
+    width: 970px;
+    height: 250px;
     display: flex;
     padding: 10px;
     border-radius: 8px;
