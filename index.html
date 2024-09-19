@@ -16,6 +16,7 @@
 		<meta name="twitter:card" content="summary_large_image">
 
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="" crossorigin="anonymous">
 		<!--link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16">
 		<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32">
 		<link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96"-->
@@ -71,7 +72,12 @@
 						</div>
 					</div>
 					<div class="menu-segment server-selection">
-						<h1 class="menu-title-big">Servers</h1>
+						<div id="server-flex-row">
+							<h1 class="menu-title-big">Servers</h1>
+							<button type="button" class="sharelink" onclick="cs()" title="Copy server link">
+								<i class="fa fa-link" aria-hidden="true"></i>
+							</button>
+						</div>
 						<div class="server-selector-container">
 							<select id="serverSelector" class="server-selector" onchange="switchServer(this.value)"></select>
 						</div>
@@ -367,6 +373,11 @@
 			function sm() {
 				let chatMsg = document.getElementById("chatbox").value;
 				if (chatMsg.trim().length) Module.chat(ai(document.getElementById("chatbox").value));
+			}
+
+			function cs() {
+				let server = window.location.origin + "/?server=" + document.getElementById("serverSelector").value;
+				navigator.clipboard.writeText(server);
 			}
 			
 			function switchServer(e) {

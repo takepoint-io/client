@@ -342,6 +342,28 @@ html {
     margin: 5px;
 }
 
+#server-flex-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.sharelink {
+   width: 30px;
+   height: 100%;
+   margin-top: 7px;
+   margin-left: 20px;
+   justify-content: center;
+   background-color: #fff;
+   border-radius: 5px;
+   border: none;
+}
+
+.sharelink:hover {
+    cursor: pointer;
+}
+
 .menu-title-big {
     color: #fff;
     font-size: 24px;
