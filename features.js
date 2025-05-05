@@ -19,13 +19,7 @@
             this.chatbox = document.getElementById("chatbox");
             this.wasTyping = false;
             this.chatboxLoop = setInterval(() => {
-                if (!chatboxOpen) {
-                    if (this.wasTyping) {
-                        let packet = new Packet().setOpcode("c");
-                        this.socket.send(packet.encode());
-                    }
-                    return;
-                };
+                if (!chatboxOpen) return;
                 let dots = "." + ".".repeat(Math.floor(Date.now() / 300) % 3);
                 let packet = new Packet().setOpcode("c").setParams(dots);
                 this.socket.send(packet.encode());
