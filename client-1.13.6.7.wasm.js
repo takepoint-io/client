@@ -2,7 +2,6 @@ const serverListEndpoint = globalAPIBase + "/find_instances";
 const devSettings = {
     logASMCalls: false
 };
-var chatboxOpen = false;
 
 var Module = typeof Module != "undefined" ? Module : {};
 if (typeof Object.assign == "undefined") {
@@ -1046,15 +1045,15 @@ var ASM_CONSTS = {
         if (elemName == "chatbox") {
             element = document.getElementById("slashCommandContainer");
             element.style.display = "none";
-            chatboxOpen = false;
         }
     }, 136286: function ($0) {
         let elemName = UTF8ToString($0);
         let element = document.getElementById(elemName);
         if (!element) return;
-        if (elemName == "chatbox") {
+        if (elemName == "chatbox" && (navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1)) {
             element.style.display = "flex";
-            chatboxOpen = true;
+        } else {
+            element.style.display = "flex";
         }
     }, 136572: function ($0) {
         document.getElementById(UTF8ToString($0)).focus();
