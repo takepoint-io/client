@@ -18,14 +18,13 @@
             this.slashCommands = [];
             this.chatbox = document.getElementById("chatbox");
             this.wasTyping = false;
-            //ugh
-            // this.chatboxLoop = setInterval(() => {
-            //     if (!chatboxOpen) return;
-            //     let dots = "." + ".".repeat(Math.floor(Date.now() / 300) % 3);
-            //     let packet = new Packet().setOpcode("c").setParams(dots);
-            //     this.socket.send(packet.encode());
-            //     this.wasTyping = true;
-            // }, 300);
+            this.chatboxLoop = setInterval(() => {
+                if (!chatboxOpen) return;
+                let dots = "." + ".".repeat(Math.floor(Date.now() / 300) % 3);
+                let packet = new Packet().setOpcode("c").setParams(dots);
+                this.socket.send(packet.encode());
+                this.wasTyping = true;
+            }, 300);
             this.socket.addEventListener("message", packet => {
                 try {
                     onMessage(packet);
